@@ -1,0 +1,36 @@
+{% extends 'base.html'%}
+
+{% block nav %}
+<a href="{% url 'tasksmanager' %}" class="btn btn-outline-success"> Task Manager</a>
+{% endblock %}
+
+{% block content %}
+{% if tasks %}
+<h4><i class="mt-5" style="align:center;">Created task{{ tasks|pluralize }}</i></h4>
+<table class="table">
+          <tr>
+            <th>Title</th>
+            <th>Date created</th>
+            <th>Expiry date</th>
+          </tr>
+          <tbody>
+          {% for task in tasks %}
+          <tr>
+              <td><a href="{% url 'task_detail' task.id %}" style="text-decoration:none;">{{ task.title }}</a></td>
+              <td>{{ task.date_created }}</td>
+              <td>{{ task.expiry_date }}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+{% else %}
+<h1><span><i style="align:center;" class="text-danger">Welcome to my Task Tracker</i></span></h1>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    There are no tasks <a href="#" class="alert-link"></a>
+</div>
+<center><a class="btn btn-outline-success w-50" href="{% url 'tasksmanager' %}">Get started?</a></center>
+{% endif %}
+{% endblock %}
+
+
+

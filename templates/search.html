@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block nav%}
+<a href="{% url 'tasksmanager' %}" class="btn btn-outline-primary">Tasks Manager</a>
+{% endblock %}
+{% block content %}
+
+<center>
+    <form action="{% url 'search' %}" method="get">
+        <input placeholder="Search for tasks" name="q" type="text" style="border-radius:20px" class="form-control">
+        <button type="submit" class="btn btn-primary btn-sm mt-2">Search</button>
+    </form>
+</center>
+{% if typos %}
+<i class="text-warning">Typos found: <span class="text-success">"{{ typos }}"</span></i>
+{% endif %}
+
+{% if tasks %}
+<h3>Search results for <span class="text-success">"{{q}}"</span></h3>
+<ul class="list-group mt-3">
+
+    {% for task in tasks %}
+
+    <li class="list-group-item m-2">
+        <a href="{% url 'task_detail' task.id %}" class="btn btn-outline-primary" style="float:right;">Detail</a>
+        <a href="{% url 'delete_task' task.id %}" class="btn btn-outline-danger" style="float:right;">Delete &cross;</a>
+        <h6>{{ task.title }}</h6>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<center><img draggable="false" src="{% static 'stop.png' %}" alt="Error"></center>
+<div class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+    <h4 class="text-danger" style="font-style:italic; font-family:monospace;">
+        Sorry!!! <span class="text-success">"{{ q }}"</span> didn't match any task title. Make sure that all words are spelled correctly.
+    </h4>
+</div>
+{% endif %}
+{% endblock %}
